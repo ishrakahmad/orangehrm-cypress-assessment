@@ -1,17 +1,13 @@
 
 class AdminUserPage {
     openAdminModule() {
-      cy.contains('.oxd-main-menu-item', 'Admin')
-        .click();
-  
+      cy.contains('.oxd-main-menu-item', 'Admin').click();
       cy.url().should('include', '/admin/viewSystemUsers');
     }
   
     clickAddUser() {
       cy.contains('button', 'Add').click();
-  
-      cy.contains('h6', 'Add User')
-        .should('be.visible');
+      cy.contains('h6', 'Add User').should('be.visible');
     }
   
     selectUserRole(role) {
@@ -85,10 +81,8 @@ class AdminUserPage {
     }
   
     searchUser(username) {
-      
       this.openAdminModule();
   
-      
       cy.contains('label', 'Username')
         .parent()
         .parent()
@@ -101,11 +95,7 @@ class AdminUserPage {
         .should('be.visible')
         .click();
   
-      
-      cy.contains('.oxd-table-row', username)
-        .should('be.visible')
-        .and('contain', 'ESS')
-        .and('contain', 'Enabled');
+      this.verifyUserRecord(username);
     }
   
     verifyUserRecord(username) {
@@ -114,6 +104,53 @@ class AdminUserPage {
         .and('contain', 'ESS')
         .and('contain', 'Enabled');
     }
+  
+    clickEditUser(username) {
+      cy.contains('.oxd-table-row', username)
+        .should('be.visible')
+        .within(() => {
+          cy.get('button')
+            .filter('[class*="oxd-table-cell-action-space"]')
+            .should('have.length.greaterThan', 0);
+        });
+  
+      cy.contains('.oxd-table-row', username)
+        .find('button')
+        .eq(1)
+        .click();
+  
+      cy.contains('h6', 'Edit User')
+        .should('be.visible');
+    }
+  
+    
+verifyUserDetails(username, employeeName, role, status) {
+    cy.contains('label', 'Username')
+      .parent()
+      .parent()
+      .find('input')
+      .should('have.value', username);
+  
+    cy.contains('label', 'Employee Name')
+      .parent()
+      .parent()
+      .find('input')
+      .should(($input) => {
+        const actualName = $input.val().trim().replace(/\s+/g, ' ');
+        expect(actualName).to.equal(employeeName);
+      });
+  
+    cy.contains('label', 'User Role')
+      .parent()
+      .parent()
+      .should('contain.text', role);
+  
+    cy.contains('label', 'Status')
+      .parent()
+      .parent()
+      .should('contain.text', status);
+  }
+  
   }
   
   export default AdminUserPage;

@@ -8,8 +8,9 @@ describe('OrangeHRM User Management', () => {
 
   const username = `qauser_${Date.now()}`;
   const password = 'Test@12345';
+  const employeeName = 'Amelia Brown';
 
-  it('should create a new user and verify the record', () => {
+  it('should create, search and verify a new user', () => {
     cy.env(['ADMIN_USERNAME', 'ADMIN_PASSWORD']).then((env) => {
       
       loginPage.login(
@@ -17,26 +18,32 @@ describe('OrangeHRM User Management', () => {
         env.ADMIN_PASSWORD
       );
 
-      
+     
       adminUserPage.openAdminModule();
 
       
       adminUserPage.clickAddUser();
-
-      
       adminUserPage.selectUserRole('ESS');
       adminUserPage.enterEmployeeName('Amelia');
       adminUserPage.selectStatus('Enabled');
       adminUserPage.enterUsername(username);
       adminUserPage.enterPassword(password);
       adminUserPage.confirmPassword(password);
-
-      
       adminUserPage.saveUser();
 
       
       adminUserPage.searchUser(username);
-      adminUserPage.verifyUserRecord(username);
+
+      
+      adminUserPage.clickEditUser(username);
+
+      
+      adminUserPage.verifyUserDetails(
+        username,
+        employeeName,
+        'ESS',
+        'Enabled'
+      );
     });
   });
 });
