@@ -93,3 +93,17 @@ The automated test verifies:
 Ishrak Ahmad
 
 GitHub: https://github.com/ishrakahmad
+
+## Test Execution Evidence
+
+### 1. Terminal Test Result
+
+The Cypress test completed successfully in headless mode.
+
+![Terminal Test Result](screenshots/terminal-pass.png)
+
+### 2. Cypress Test Runner
+
+The test also passed in the Cypress interactive test runner.
+
+![Cypress UI Test Result](screenshots/cypress-ui-pass.png)
