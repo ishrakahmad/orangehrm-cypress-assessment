@@ -1,13 +1,17 @@
 
 class AdminUserPage {
     openAdminModule() {
-      cy.contains('.oxd-main-menu-item', 'Admin').click();
+      cy.contains('.oxd-main-menu-item', 'Admin')
+        .click();
+  
       cy.url().should('include', '/admin/viewSystemUsers');
     }
   
     clickAddUser() {
       cy.contains('button', 'Add').click();
-      cy.contains('h6', 'Add User').should('be.visible');
+  
+      cy.contains('h6', 'Add User')
+        .should('be.visible');
     }
   
     selectUserRole(role) {
@@ -19,7 +23,6 @@ class AdminUserPage {
   
       cy.get('.oxd-select-dropdown')
         .contains('.oxd-select-option', role)
-        .should('be.visible')
         .click();
     }
   
@@ -32,7 +35,6 @@ class AdminUserPage {
   
       cy.get('.oxd-select-dropdown')
         .contains('.oxd-select-option', status)
-        .should('be.visible')
         .click();
     }
   
@@ -77,25 +79,40 @@ class AdminUserPage {
       cy.contains('button', 'Save')
         .should('be.visible')
         .click();
+  
+      cy.contains('Successfully Saved')
+        .should('be.visible');
     }
   
     searchUser(username) {
-      cy.url().should('include', '/admin/viewSystemUsers');
+      
+      this.openAdminModule();
   
-      cy.get('.oxd-form')
-        .first()
-        .within(() => {
-          cy.contains('label', 'Username')
-            .parent()
-            .parent()
-            .find('input')
-            .should('be.visible')
-            .type(username);
+      
+      cy.contains('label', 'Username')
+        .parent()
+        .parent()
+        .find('input')
+        .should('be.visible')
+        .clear()
+        .type(username);
   
-          cy.contains('button', 'Search')
-            .should('be.visible')
-            .click();
-        });
+      cy.contains('button', 'Search')
+        .should('be.visible')
+        .click();
+  
+      
+      cy.contains('.oxd-table-row', username)
+        .should('be.visible')
+        .and('contain', 'ESS')
+        .and('contain', 'Enabled');
+    }
+  
+    verifyUserRecord(username) {
+      cy.contains('.oxd-table-row', username)
+        .should('be.visible')
+        .and('contain', 'ESS')
+        .and('contain', 'Enabled');
     }
   }
   
