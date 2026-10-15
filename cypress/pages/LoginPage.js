@@ -1,7 +1,7 @@
-
 class LoginPage {
     visit() {
-      cy.visit('https://opensource-demo.orangehrmlive.com/');
+      
+      cy.visit('/');
     }
   
     enterUsername(username) {
@@ -33,4 +33,3 @@ class LoginPage {
   }
   
   export default LoginPage;
-  
